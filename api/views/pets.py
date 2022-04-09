@@ -38,3 +38,21 @@ def show(id):
   pet = Pet.query.filter_by(id=id).first()
   pet_data = pet.serialize()
   return jsonify(pet=pet_data), 200
+
+
+# update a pet
+@pets.route('/<id>', methods=["PUT"])
+@login_required
+def update(id):
+  data = request.get_json()
+  profile = read_token(request)
+  pet = Pet.query.filter_by(id=id).first()
+
+  if pet.profile_id != profile["id"]:
+    return 'Forbidden', 403
+
+  for key in data:
+    setattr(pet, key, data[key])
+  
+  db.session.commit()
+  return jsonify(pet.serialize()), 200
