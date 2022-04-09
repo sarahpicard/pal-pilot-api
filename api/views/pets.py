@@ -1,4 +1,3 @@
-import json
 from flask import Blueprint, jsonify, request
 from api.middleware import login_required, read_token
 
@@ -94,7 +93,8 @@ def add_allergy(id):
 
   db.session.add(allergy)
   db.session.commit()
-  # when running this in postman - 'NoneType' object has no attribute 'profile_id' from line 90
+  pet_data = pet.serialize()
+  return jsonify(pet_data), 201
 
 
 
@@ -117,4 +117,3 @@ def add_medication(id):
 
   db.session.add(medication)
   db.session.commit()
-  # when running this in postman - 'NoneType' object has no attribute 'profile_id' from line 112

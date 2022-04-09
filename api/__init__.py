@@ -10,6 +10,7 @@ from api.models.profile import Profile
 from api.models.pet import Pet
 from api.models.allergy import Allergy
 from api.models.medication import Medication
+from api.models.vaccine import Vaccine
 
 # ============ Import Views ============
 from api.views.auth import auth

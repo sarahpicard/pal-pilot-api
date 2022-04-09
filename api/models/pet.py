@@ -14,6 +14,7 @@ class Pet(db.Model):
 
   allergies = db.relationship("Allergy", cascade='all')
   medications = db.relationship("Medication", cascade='all')
+  vaccines = db.relationship("Vaccine", cascade='all')
 
   def __repr__(self):
     return f"Pet('{self.id}', '{self.name}'"
@@ -24,4 +25,6 @@ class Pet(db.Model):
     pet['allergies'] = allergies
     medications = [medication.serialize() for medication in self.medications]
     pet['medications'] = medications
+    vaccines = [vaccine.serialize() for vaccine in self.vaccines]
+    pet['vaccines'] = vaccines
     return pet
