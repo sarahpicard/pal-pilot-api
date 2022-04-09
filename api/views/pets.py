@@ -21,3 +21,11 @@ def create():
   db.session.add(pet)
   db.session.commit()
   return jsonify(pet.serialize()), 201
+
+
+# see all of my pets
+@pets.route('/', methods=["GET"])
+@login_required
+def index():
+  pets = Pet.query.all()
+  return jsonify([pet.serialize() for pet in pets]), 200
