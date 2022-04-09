@@ -29,3 +29,12 @@ def create():
 def index():
   pets = Pet.query.all()
   return jsonify([pet.serialize() for pet in pets]), 200
+
+
+# show a pet
+@pets.route('/<id>', methods=["GET"])
+@login_required
+def show(id):
+  pet = Pet.query.filter_by(id=id).first()
+  pet_data = pet.serialize()
+  return jsonify(pet=pet_data), 200
