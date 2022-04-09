@@ -12,9 +12,13 @@ class Pet(db.Model):
   created_at = db.Column(db.DateTime, default=datetime.utcnow)
   profile_id = db.Column(db.Integer, db.ForeignKey('profiles.id'))
 
+  allergies = db.relationship("Allergy", cascade='all')
+
   def __repr__(self):
     return f"Pet('{self.id}', '{self.name}'"
 
   def serialize(self):
     pet = {c.name: getattr(self, c.name) for c in self.__table__.columns}
+    allergies = [allergy.serialize() for allergy in self.allergies]
+    pet['allergies'] = allergies
     return pet

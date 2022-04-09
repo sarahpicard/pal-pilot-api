@@ -12,5 +12,8 @@ class Allergy(db.Model):
     return f"Allergy('{self.id}', '{self.name}'"
 
   def serialize(self):
-    allergy = {c.name: getattr(self, c.name) for c in self.__table__.columns}
-    return allergy
+    return {
+      "id": self.id,
+      "allergy": self.allergy,
+      "pet_id": self.pet_id,
+    }
