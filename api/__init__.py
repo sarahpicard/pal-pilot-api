@@ -11,6 +11,7 @@ from api.models.pet import Pet
 
 # ============ Import Views ============
 from api.views.auth import auth
+from api.views.pets import pets
 
 cors = CORS()
 migrate = Migrate() 
@@ -26,6 +27,7 @@ def create_app(config):
 
   # ============ Register Blueprints ============
   app.register_blueprint(auth, url_prefix='/api/auth') 
+  app.register_blueprint(pets, url_prefix='/api/pets')
 
   return app
 

@@ -5,3 +5,19 @@ from api.models.db import db
 from api.models.pet import Pet
 
 pets = Blueprint('pets', 'pets')
+
+
+
+# ROUTES
+
+# create a pet
+@pets.route('/', methods=["POST"])
+@login_required
+def create():
+  data = request.get_json()
+  profile = read_token(request)
+  data["profile_id"] = profile["id"]
+  pet = Pet(**data)
+  db.session.add(pet)
+  db.session.commit()
+  return jsonify(pet.serialize()), 201
