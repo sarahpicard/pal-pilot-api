@@ -4,12 +4,12 @@ from api.middleware import login_required, read_token
 
 from api.models.db import db
 from api.models.pet import Pet
+from api.models.allergy import Allergy
 
 pets = Blueprint('pets', 'pets')
 
 
-
-# ROUTES
+# ROUTES (pets)
 
 # create a pet
 @pets.route('/', methods=["POST"])
@@ -71,3 +71,25 @@ def delete(id):
   db.session.delete(pet)
   db.session.commit()
   return jsonify(message="Success"), 200
+
+
+
+# ROUTES (allergies)
+
+# create an allergy
+@pets.route('/<id>/allergies', methods=["POST"])
+@login_required
+def add_allergy(id):
+  data = request.get_json()
+  data["pet_id"] = id
+
+  profile = read_token(request)
+  pet = Pet.query.filter_by(id=id).first()
+
+  if pet.profile_id != profile["id"]:
+    return 'Forbidden', 403
+
+  allergy = Allergy(**data)
+
+  db.session.add(allergy)
+  db.session.commit()

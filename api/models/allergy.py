@@ -9,7 +9,7 @@ class Allergy(db.Model):
   pet_id = db.Column(db.Integer, db.ForeignKey('pets.id'))
 
   def __repr__(self):
-    return f"Allergy('{self.id}', '{self.name}'"
+    return f"Allergy('{self.id}', '{self.allergy}'"
 
   def serialize(self):
     return {
