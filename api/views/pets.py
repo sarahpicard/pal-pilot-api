@@ -1,3 +1,4 @@
+import json
 from flask import Blueprint, jsonify, request
 from api.middleware import login_required, read_token
 
@@ -39,7 +40,6 @@ def show(id):
   pet_data = pet.serialize()
   return jsonify(pet=pet_data), 200
 
-
 # update a pet
 @pets.route('/<id>', methods=["PUT"])
 @login_required
@@ -56,3 +56,18 @@ def update(id):
   
   db.session.commit()
   return jsonify(pet.serialize()), 200
+
+
+# delete a pet
+@pets.route('/<id>', methods=["DELETE"])
+@login_required
+def delete(id):
+  profile = read_token(request)
+  pet = Pet.query.filter_by(id=id).first()
+
+  if pet.profile_id != profile["id"]:
+    return 'Forbidden', 403
+  
+  db.session.delete(pet)
+  db.session.commit()
+  return jsonify(message="Success"), 200
