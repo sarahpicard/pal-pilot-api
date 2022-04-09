@@ -5,6 +5,7 @@ from api.models.db import db
 from api.models.pet import Pet
 from api.models.allergy import Allergy
 from api.models.medication import Medication
+from api.models.vaccine import Vaccine
 
 pets = Blueprint('pets', 'pets')
 
@@ -117,3 +118,29 @@ def add_medication(id):
 
   db.session.add(medication)
   db.session.commit()
+  pet_data = pet.serialize()
+  return jsonify(pet_data), 201
+
+
+
+# ROUTES (vaccine)
+
+# create a vaccine
+@pets.route('/<id>/vaccines', methods=["POST"])
+@login_required
+def add_vaccine(id):
+  data = request.get_json()
+  data["pet_id"] = id
+
+  profile = read_token(request)
+  pet = Pet.query.filter_by(id=id).first()
+
+  if pet.profile_id != profile["id"]:
+    return 'Forbidden', 403
+
+  vaccine = Vaccine(**data)
+
+  db.session.add(vaccine)
+  db.session.commit()
+  pet_data = pet.serialize()
+  return jsonify(pet_data), 201
