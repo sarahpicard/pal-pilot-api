@@ -8,6 +8,7 @@ from config import Config
 from api.models.user import User
 from api.models.profile import Profile
 from api.models.pet import Pet
+from api.models.allergy import Allergy
 
 # ============ Import Views ============
 from api.views.auth import auth
