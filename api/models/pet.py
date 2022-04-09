@@ -13,6 +13,7 @@ class Pet(db.Model):
   profile_id = db.Column(db.Integer, db.ForeignKey('profiles.id'))
 
   allergies = db.relationship("Allergy", cascade='all')
+  medications = db.relationship("Medication", cascade='all')
 
   def __repr__(self):
     return f"Pet('{self.id}', '{self.name}'"
@@ -21,4 +22,6 @@ class Pet(db.Model):
     pet = {c.name: getattr(self, c.name) for c in self.__table__.columns}
     allergies = [allergy.serialize() for allergy in self.allergies]
     pet['allergies'] = allergies
+    medications = [medication.serialize() for medication in self.medications]
+    pet['medications'] = medications
     return pet

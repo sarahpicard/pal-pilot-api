@@ -5,6 +5,7 @@ from api.middleware import login_required, read_token
 from api.models.db import db
 from api.models.pet import Pet
 from api.models.allergy import Allergy
+from api.models.medication import Medication
 
 pets = Blueprint('pets', 'pets')
 
@@ -93,3 +94,27 @@ def add_allergy(id):
 
   db.session.add(allergy)
   db.session.commit()
+  # when running this in postman - 'NoneType' object has no attribute 'profile_id' from line 90
+
+
+
+# ROUTES (medication)
+
+# create a medication
+@pets.route('/<id>/medications', methods=["POST"])
+@login_required
+def add_medication(id):
+  data = request.get_json()
+  data["pet_id"] = id
+
+  profile = read_token(request)
+  pet = Pet.query.filter_by(id=id).first()
+
+  if pet.profile_id != profile["id"]:
+    return 'Forbidden', 403
+
+  medication = Medication(**data)
+
+  db.session.add(medication)
+  db.session.commit()
+  # when running this in postman - 'NoneType' object has no attribute 'profile_id' from line 112
