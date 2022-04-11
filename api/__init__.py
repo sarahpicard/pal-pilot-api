@@ -11,6 +11,7 @@ from api.models.pet import Pet
 from api.models.allergy import Allergy
 from api.models.medication import Medication
 from api.models.vaccine import Vaccine
+from api.models.appointment import Appointment
 
 # ============ Import Views ============
 from api.views.auth import auth
