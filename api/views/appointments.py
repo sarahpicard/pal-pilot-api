@@ -55,3 +55,18 @@ def update(id):
 
   db.session.commit()
   return jsonify(appointment.serialize()), 200
+
+
+# delete an appointment 
+@appointments.route('/<id>', methods=["DELETE"])
+@login_required
+def delete(id):
+  profile = read_token(request)
+  appointment = Appointment.query.filter_by(id=id).first()
+
+  if appointment.profile_id != profile["id"]:
+    return 'Forbidden', 403
+
+  db.session.delete(appointment)
+  db.session.commit()
+  return jsonify(message="Success"), 200
