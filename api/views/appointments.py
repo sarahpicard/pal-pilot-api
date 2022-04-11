@@ -22,3 +22,11 @@ def create():
   db.session.add(appointment)
   db.session.commit()
   return jsonify(appointment.serialize()), 201
+
+
+# see all appointments
+@appointments.route('/', methods=["GET"])
+@login_required
+def index():
+  appointments = Appointment.query.all()
+  return jsonify([appointment.serialize() for appointment in appointments]), 201
