@@ -1,3 +1,4 @@
+from api.views.auth import login
 from flask import Blueprint, jsonify, request
 from api.middleware import login_required, read_token
 
@@ -30,3 +31,11 @@ def create():
 def index():
   appointments = Appointment.query.all()
   return jsonify([appointment.serialize() for appointment in appointments]), 201
+
+
+# show one appointment 
+@appointments.route('/<id>', methods=["GET"])
+@login_required
+def show(id):
+  appointment = Appointment.query.filter_by(id=id).first()
+  return jsonify(appointment.serialize()), 200
