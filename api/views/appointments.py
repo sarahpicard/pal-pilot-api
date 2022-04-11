@@ -27,7 +27,6 @@ def create():
 
 # see all appointments
 @appointments.route('/', methods=["GET"])
-@login_required
 def index():
   appointments = Appointment.query.all()
   return jsonify([appointment.serialize() for appointment in appointments]), 201
@@ -35,7 +34,24 @@ def index():
 
 # show one appointment 
 @appointments.route('/<id>', methods=["GET"])
-@login_required
 def show(id):
   appointment = Appointment.query.filter_by(id=id).first()
+  return jsonify(appointment.serialize()), 200
+
+
+# update an appointment 
+@appointments.route('/<id>', methods=["PUT"])
+@login_required
+def update(id):
+  data = request.get_json()
+  profile = read_token(request)
+  appointment = Appointment.query.filter_by(id=id).first()
+
+  if appointment.profile_id != profile["id"]:
+    return 'Forbidden', 403
+
+  for key in data:
+    setattr(appointment, key, data[key])
+
+  db.session.commit()
   return jsonify(appointment.serialize()), 200
