@@ -16,6 +16,7 @@ from api.models.appointment import Appointment
 # ============ Import Views ============
 from api.views.auth import auth
 from api.views.pets import pets
+from api.views.appointments import appointments
 
 cors = CORS()
 migrate = Migrate() 
@@ -32,6 +33,7 @@ def create_app(config):
   # ============ Register Blueprints ============
   app.register_blueprint(auth, url_prefix='/api/auth') 
   app.register_blueprint(pets, url_prefix='/api/pets')
+  app.register_blueprint(appointments, url_prefix='/api/appointments')
 
   return app
 
