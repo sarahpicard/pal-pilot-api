@@ -18,7 +18,6 @@ def index():
 @auth.route('/register', methods=["POST"])
 def register():
   data = request.get_json()
-
   user_data = {
     "email": data["email"],
     "password": gen_password(data['password'])
@@ -44,6 +43,7 @@ def register():
 @auth.route('/login', methods=["POST"])
 def login():
   data = request.get_json()
+  print("DATA!!!!", data)
   user = User.query.filter_by(email=data['email']).first()
 
   if user and compare_password(data['password'], user.password):

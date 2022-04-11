@@ -29,6 +29,7 @@ def create():
 @pets.route('/', methods=["GET"])
 @login_required
 def index():
+  print("CONSOLE LOG!!", pets)
   pets = Pet.query.all()
   return jsonify([pet.serialize() for pet in pets]), 200
 
