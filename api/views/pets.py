@@ -124,6 +124,7 @@ def add_medication(id):
 
 
 
+
 # ROUTES (vaccine)
 
 # create a vaccine
